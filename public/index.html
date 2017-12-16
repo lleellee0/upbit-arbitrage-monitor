@@ -1,0 +1,70 @@
+
+<html>
+    <head>
+        <title>
+            BTC-PRICE-MONITOR
+        </title>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <table>
+            <thead>
+                <th>
+                    Name
+                </th>
+                <th>
+                    KRW Price
+                </th>
+                <th>
+                    Calc Price
+                </th>
+                <th>
+                    Percent
+                </th>
+            </thead>
+            <tbody id = "targetTable">
+            </tbody>
+        </table>
+        <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script>
+
+
+            function loadData() {
+                // 테이블 비우기
+                $('#targetTable').html('');
+
+                var count = 0;
+
+                var table = document.querySelector('#targetTable');
+
+                var xhttp = new XMLHttpRequest();
+                xhttp.open('GET', '/api', true);
+                xhttp.send('');
+
+                xhttp.onload = function() {
+                    if(xhttp.status == 200) {
+                        var totalArray = JSON.parse(xhttp.response);
+
+                        console.log(totalArray);
+                        for(var i = 0; i < totalArray.length; i++) {
+                            $("#targetTable").
+                            append(`<tr>
+                                <td>${totalArray[i].name}</td>
+                                <td>${totalArray[i].krwPrice}</td>
+
+                                <td>${Math.round(totalArray[i].calcPrice)}</td>
+                                <td>${totalArray[i].percent}%</td>
+                                </tr>`);
+                        }
+
+
+                    }
+                }
+            }
+
+            loadData();
+            setInterval(loadData, 1000);
+
+        </script>
+    </body>
+</html>
